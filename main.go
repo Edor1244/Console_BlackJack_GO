@@ -117,6 +117,7 @@ func main() {
 	mascartas := true
 	playerBJ := false
 	playerTurn := true
+	var crupierTurn bool
 	turnNumber := 0
 	var choice string
 	deck := NewDeck()
@@ -135,16 +136,17 @@ func main() {
 
 	PlayerScore = handValue(playerHand)
 	fmt.Println("Score del jugador:", PlayerScore)
-	fmt.Println("\nCartas del crupier:")
-	fmt.Println("Hidden card")
-	for i := 1; i < len(dealerHand); i++ {
-		fmt.Println(dealerHand[i].Value, "of", dealerHand[i].Suit)
-	}
 
 	if PlayerScore == 21 {
-		fmt.Println("Blackjack")
+		fmt.Println("Ganaste con Blackjack")
+		playerBJ = true
 		playerTurn = false
 	} else {
+		fmt.Println("\nCartas del crupier:")
+		fmt.Println("Hidden card")
+		for i := 1; i < len(dealerHand); i++ {
+			fmt.Println(dealerHand[i].Value, "of", dealerHand[i].Suit)
+		}
 		for mascartas {
 			if PlayerScore < 21 {
 				if turnNumber == 0 {
@@ -164,61 +166,62 @@ func main() {
 					playerStand()
 					playerTurn = false
 					mascartas = false
+					crupierTurn = true
+					break
 				} else if choice == "D" {
 					PlayerScore = playerDouble(playerHand, deck)
 					playerStand()
 					fmt.Println("\nScore del jugador:", PlayerScore)
 					playerTurn = false
 					mascartas = false
+					crupierTurn = true
 				}
-			}else if PlayerScore == 21 {
-				break
-			}else if PlayerScore > 21 {
-				mascartas = false
-				playerTurn = false
-				break
-			}
-
-		}
-		if PlayerScore == 21 || PlayerScore > 21 {
-			if PlayerScore == 21 {
-				fmt.Println("\nBlackjack")
-				playerStand()
-				playerTurn = false
-
+			} else if PlayerScore == 21 {
+				fmt.Println("Obtuviste 21, te quedas.")
+				CrupierScore = CuprierTurn(dealerHand, deck)
+				if CrupierScore != 21 {
+					fmt.Println("\n¡Ganaste con 21!")
+					crupierTurn = false
+					playerTurn = false
+					break
+				} else {
+					fmt.Println("\n¡Empate!")
+					crupierTurn = false
+					playerTurn = false
+					break
+				}
 			} else if PlayerScore > 21 {
 				fmt.Println("\nTe pasaste de 21, Perdiste.")
+				crupierTurn = false
 				playerTurn = false
+				break
 			}
-		}else if PlayerScore > 21{
-			fmt.Println("\nTe pasaste de 21, Perdiste2.")
-			playerTurn = false
 		}
-		if !playerTurn {
-			fmt.Println("\nEs el turno del crupier.")
-			fmt.Println("\nCartas del crupier:")
-			for _, card := range dealerHand {
-				fmt.Println("\n", card.Value, "of", card.Suit)
+		if crupierTurn {
+			if !playerTurn {
+				fmt.Println("\nEs el turno del crupier.")
+				fmt.Println("\nCartas del crupier:")
+				for _, card := range dealerHand {
+					fmt.Println("\n", card.Value, "of", card.Suit)
+				}
+				CrupierScore = CuprierTurn(dealerHand, deck)
+				if CrupierScore > 21 {
+					fmt.Println("\n¡Ganaste! El crupier se pasó de 21.")
+				} else if PlayerScore > CrupierScore && PlayerScore <= 21 {
+					fmt.Println("\n¡Ganaste!")
+				} else if playerBJ && CrupierScore != 21 {
+					fmt.Println("\n¡Ganaste con Blackjack!")
+				} else if PlayerScore < CrupierScore && CrupierScore <= 21 {
+					fmt.Println("\n¡Perdiste!")
+				} else if PlayerScore == CrupierScore {
+					fmt.Println("\n¡Empate!")
+				} else {
+					fmt.Println("\n¡Perdiste! El crupier gana.")
+				}
 			}
-			CrupierScore = CuprierTurn(dealerHand, deck)
-			if PlayerScore > CrupierScore && PlayerScore <= 21 {
-				// El jugador tiene un puntaje mayor que el crupier y no se ha pasado de 21.
-				fmt.Println("\n¡Ganaste!")
-			} else if playerBJ && CrupierScore != 21 {
-				// El jugador tiene Blackjack y el crupier no tiene 21.
-				fmt.Println("\n¡Ganaste con Blackjack!")
-			} else if PlayerScore < CrupierScore && CrupierScore <= 21 {
-				// El jugador tiene un puntaje menor que el crupier y el crupier no se ha pasado de 21.
-				fmt.Println("\n¡Perdiste!")
-			} else if PlayerScore == CrupierScore {
-				// El jugador y el crupier tienen el mismo puntaje.
-				fmt.Println("\n¡Empate!")
-			} else {
-				// En este caso, el jugador se ha pasado de 21 y el crupier no, por lo que el crupier gana.
-				fmt.Println("\n¡Perdiste! El crupier gana.")
-			}
-			
+			fmt.Println("\n Acabo el juego.")
+		} else {
+			fmt.Println("\nAcabo el juego.")
 		}
 	}
-
 }
