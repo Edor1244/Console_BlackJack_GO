@@ -44,17 +44,10 @@ func (d *Deck) Deal() Card {
 
 // Función para que el jugador "hit" (tome más cartas)
 func playerHit(playerHand []Card, deck Deck) []Card {
-	var numEntrada int
-	playerScore := handValue(playerHand)
-	println("Score del jugador antes de dar un HIT", playerScore)
-	fmt.Println("La mano del jugador antes de un HIT", playerHand)
 	playerHand = append(playerHand, deck.Deal())
 	fmt.Println("\nTu nueva carta es:", playerHand[len(playerHand)-1].Value, "of", playerHand[len(playerHand)-1].Suit)
-	numEntrada++
-	playerScore = handValue(playerHand)
-	fmt.Println("Score del jugador despues de mostrar las nuevas cartas:", playerScore)
-	fmt.Println("Numero de entrada", numEntrada)
-	fmt.Println("La mano del jugador", playerHand)
+	playerScore := handValue(playerHand)
+	fmt.Println("\nScore del jugador:", playerScore)
 	return playerHand
 }
 
@@ -72,14 +65,14 @@ func playerDouble(playerHand []Card, deck Deck) int {
 
 func CuprierTurn(dealerHand []Card, deck Deck) int {
 	dealerScore := handValue(dealerHand)
+	fmt.Println("Score del crupier al destapar carta:", dealerScore)
 	for dealerScore <= 17 {
 		dealerHand = append(dealerHand, deck.Deal())
 		dealerScore = handValue(dealerHand)
-		fmt.Println("Score del crupier:", dealerScore)
 		fmt.Println("\nEl crupier toma una carta.")
-		fmt.Println("La nueva carta del crupier es:", dealerHand[len(dealerHand)-1].Value, "of", dealerHand[len(dealerHand)-1].Suit)
+		fmt.Println("\nLa nueva carta del crupier es:", dealerHand[len(dealerHand)-1].Value, "of", dealerHand[len(dealerHand)-1].Suit)
+		fmt.Println("\nScore del crupier:", dealerScore)
 	}
-	fmt.Println("Score del crupier:", dealerScore)
 	return dealerScore
 }
 
@@ -153,11 +146,7 @@ func main() {
 		playerTurn = false
 	} else {
 		for mascartas {
-			fmt.Println("Score del jugador al entrar al for mascartas:", PlayerScore)
-			fmt.Println("Mano del jugador al entrar al for mascartas:", playerHand)
 			if PlayerScore < 21 {
-				fmt.Println("Score del jugador al entrar al if player < 21 ", PlayerScore)
-				fmt.Println("Mano del jugador al entrar al if player < 21 ", playerHand)
 				if turnNumber == 0 {
 					fmt.Printf("\n¿Quieres otra carta, te quedas o Doble? (H/S/D): ")
 				} else {
@@ -166,14 +155,10 @@ func main() {
 				fmt.Scan(&choice)
 
 				if choice == "H" {
-					fmt.Println("Deckplayer old  del jugador", playerHand,  "en el turno ", turnNumber)
 					turnNumber++
 					PlayerScore = handValue(playerHand)
 					playerHand = playerHit(playerHand, deck)
-					fmt.Println("Score del jugador", PlayerScore,  "en el turno ", turnNumber)
-					fmt.Println("deckplayer new del jugador", playerHand,  "en el turno ", turnNumber)
 					PlayerScore = handValue(playerHand)
-					fmt.Println("Score del jugador", PlayerScore,  "en el turno ", turnNumber)
 				}
 				if choice == "S" {
 					playerStand()
@@ -182,7 +167,7 @@ func main() {
 				} else if choice == "D" {
 					PlayerScore = playerDouble(playerHand, deck)
 					playerStand()
-					fmt.Println("Score del jugador:", PlayerScore)
+					fmt.Println("\nScore del jugador:", PlayerScore)
 					playerTurn = false
 					mascartas = false
 				}
@@ -197,33 +182,42 @@ func main() {
 		}
 		if PlayerScore == 21 || PlayerScore > 21 {
 			if PlayerScore == 21 {
-				fmt.Println("Blackjack")
+				fmt.Println("\nBlackjack")
 				playerStand()
 				playerTurn = false
 
 			} else if PlayerScore > 21 {
-				fmt.Println("Te pasaste de 21, Perdiste.")
+				fmt.Println("\nTe pasaste de 21, Perdiste.")
 				playerTurn = false
 			}
 		}else if PlayerScore > 21{
-			fmt.Println("Te pasaste de 21, Perdiste.")
+			fmt.Println("\nTe pasaste de 21, Perdiste2.")
 			playerTurn = false
 		}
 		if !playerTurn {
+			fmt.Println("\nEs el turno del crupier.")
 			fmt.Println("\nCartas del crupier:")
 			for _, card := range dealerHand {
-				fmt.Println(card.Value, "of", card.Suit)
+				fmt.Println("\n", card.Value, "of", card.Suit)
 			}
 			CrupierScore = CuprierTurn(dealerHand, deck)
 			if PlayerScore > CrupierScore && PlayerScore <= 21 {
-				fmt.Println("Ganaste")
+				// El jugador tiene un puntaje mayor que el crupier y no se ha pasado de 21.
+				fmt.Println("\n¡Ganaste!")
 			} else if playerBJ && CrupierScore != 21 {
-				fmt.Println("Ganaste con Blackjack")
+				// El jugador tiene Blackjack y el crupier no tiene 21.
+				fmt.Println("\n¡Ganaste con Blackjack!")
 			} else if PlayerScore < CrupierScore && CrupierScore <= 21 {
-				fmt.Println("Perdiste")
+				// El jugador tiene un puntaje menor que el crupier y el crupier no se ha pasado de 21.
+				fmt.Println("\n¡Perdiste!")
 			} else if PlayerScore == CrupierScore {
-				fmt.Println("Empate")
+				// El jugador y el crupier tienen el mismo puntaje.
+				fmt.Println("\n¡Empate!")
+			} else {
+				// En este caso, el jugador se ha pasado de 21 y el crupier no, por lo que el crupier gana.
+				fmt.Println("\n¡Perdiste! El crupier gana.")
 			}
+			
 		}
 	}
 
