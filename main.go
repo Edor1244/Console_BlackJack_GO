@@ -1,17 +1,21 @@
 package main
 
 import (
+	"Pruebas_D_GO/cmd"
 	"fmt"
 	"math/rand"
 	"time"
+
 )
 
-type Card struct {
-	Suit  string
-	Value string
+func main() {
+	app := cmd.NewApp()
+	app.Run()
 }
 
-type Deck []Card
+type Card model.Card
+Type Deck = model.Deck
+
 
 func NewDeck() Deck {
 	var deck Deck
@@ -27,7 +31,7 @@ func NewDeck() Deck {
 	return deck
 }
 
-func (d Deck) Shuffle() {
+func (d DeckController) Shuffle(deck Deck) Deck {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 	for i := range d {
