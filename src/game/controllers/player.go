@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"Pruebas_D_GO/src/internal/model"
+	"Pruebas_D_GO/src/model"
 	"fmt"
 )
 
@@ -23,7 +23,7 @@ func (p *playerController) playerHit() int {
 	p.handCtrl.addCard(card)
 	fmt.Println("\nTu nueva carta es:", p.hand[len(p.hand)-1].Value, "of", p.hand[len(p.hand)-1].Suit)
 
-	newScore := p.handCtrl.handValue(p.hand) // Llamar a handValue del handController
+	newScore := p.handCtrl.handValue() // Llamar a handValue del handController
 	fmt.Println("\nScore del jugador:", newScore)
 	return newScore
 }
@@ -38,8 +38,16 @@ func(p *playerController) playerDouble() int {
 	card := p.deckCtrl.Deal()
 	p.handCtrl.addCard(card)
 	fmt.Println("\nTu nueva carta es:", p.hand[len(p.hand)-1].Value, "of", p.hand[len(p.hand)-1].Suit)
-	newScore := p.handCtrl.handValue(p.hand) // Llamar a handValue del handController
+	newScore := p.handCtrl.handValue() // Llamar a handValue del handController
 	return newScore
+}
+
+func (p *playerController) showHand() string {
+    var handString string
+    for _, card := range p.hand {
+        handString += card.Value + " of " + card.Suit + ", "
+    }
+    return handString[:len(handString)-2] // Eliminar la última coma y espacio
 }
 
 

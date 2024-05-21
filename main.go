@@ -16,22 +16,7 @@ func main() {
 	var crupierTurn bool
 	turnNumber := 0
 	var choice string
-	deck := NewDeck()
-	deck.Shuffle()
-	PlayerScore := 0
-	CrupierScore := 0
 
-	// Ejemplo de reparto de cartas para el jugador y el crupier
-	playerHand := []Card{deck.Deal(), deck.Deal()}
-	dealerHand := []Card{deck.Deal(), deck.Deal()}
-
-	fmt.Println("Cartas del jugador:")
-	for _, card := range playerHand {
-		fmt.Println(card.Value, "of", card.Suit)
-	}
-
-	PlayerScore = handValue(playerHand)
-	fmt.Println("Score del jugador:", PlayerScore)
 
 	if PlayerScore == 21 {
 		fmt.Println("Ganaste con Blackjack")

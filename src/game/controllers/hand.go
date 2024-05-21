@@ -1,6 +1,6 @@
 package controllers
 
-import "Pruebas_D_GO/src/internal/model"
+import "Pruebas_D_GO/src/model"
 
 type handController struct {
 	hand []model.Card	
@@ -17,12 +17,22 @@ func (h *handController) addCard(card model.Card) {
     h.hand = append(h.hand, card)
 }
 
+//Funcion para ver si una carta es BlackJack
+func(h *handController) itsBlackJack() bool{
+	total := 0;
+	total = h.handValue()
+	if(total == 21){
+		return true
+	}else{
+		return false
+	}
+}
 
 // Función para calcular el valor total de una mano de cartas
-func (h *handController) handValue(hand []model.Card) int {
+func (h *handController) handValue() int {
 	total := 0
 	numAces := 0
-	for _, card := range hand {
+	for _, card := range h.hand {
 		switch card.Value {
 		case "Ace":
 			total += 11

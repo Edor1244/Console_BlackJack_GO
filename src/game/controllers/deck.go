@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"Pruebas_D_GO/src/internal/model"
+	"Pruebas_D_GO/src/model"
 	"math/rand"
 	"time"
 )
