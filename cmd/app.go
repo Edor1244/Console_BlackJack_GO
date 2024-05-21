@@ -1,9 +1,18 @@
 package cmd
 
-type app struct{}
+import (
+	"model" 
+)
 
-func (a app) Run() {
-	panic("implement me")
+type app struct {
+	deck        model.Deck
+	playerHand  []model.Card
+	dealerHand  []model.Card
+	playerScore int
+	dealerScore int
+}
+
+func (a *app) Run() {
 }
 
 type App interface {
@@ -11,5 +20,11 @@ type App interface {
 }
 
 func NewApp() App {
-	return &app{}
+	a := &app{}
+	a.deck.Shuffle()
+	a.playerHand = []model.Card{}
+	a.playerScore = 0
+	a.dealerScore = 0
+
+	return a
 }
