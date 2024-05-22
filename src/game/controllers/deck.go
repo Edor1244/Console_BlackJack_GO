@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-type deckController struct {
+type DeckController struct {
 	deck model.Deck
 }
 
-func newDeckController() *deckController {
-    d := &deckController{
+func NewDeckController() *DeckController {
+    d := &DeckController{
         deck: NewDeck(), // Llama al método NewDeck para crear y asignar la baraja
     }
     d.Shuffle()
@@ -34,7 +34,7 @@ func NewDeck() model.Deck {
 }
 
 //Función para barajar las cartas
-func (d *deckController) Shuffle() {
+func (d *DeckController) Shuffle() {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
 	for i := range d.deck {
@@ -44,7 +44,7 @@ func (d *deckController) Shuffle() {
 }
 
 //Función para repartir las cartas
-func (d * deckController) Deal() model.Card {
+func (d * DeckController) Deal() model.Card {
 	card, remainingDeck := d.deck[0], d.deck[1:]
 	d.deck = remainingDeck
 	return card
