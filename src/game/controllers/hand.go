@@ -19,6 +19,35 @@ func (h *HandController) ClearHand() {
 	h.hand = []model.Card{}
 }
 
+func (h *HandController) ShowHand() string {
+	var handString string
+	for _, card := range h.hand {
+		handString += card.Value + " of " + card.Suit + ", "
+	}
+	return handString[:len(handString)-2] // Eliminar la última coma y espacio
+}
+
+// Funcion para mostrar solo una carta cuprier
+func (h *HandController) ShowHandHidden() string {
+	if len(h.hand) == 0 {
+		return ""
+	}
+	var handString string
+	handString = "Hidden, " // Ocultar la primera carta
+	for i, card := range h.hand {
+		if i == 0 {
+			continue
+		}
+		handString += card.Value + " of " + card.Suit + ", "
+	}
+	return handString[:len(handString)-2] // Eliminar la última coma y espacio
+}
+
+// Función para añadir una carta a la mano
+func (h *HandController) AddCard(card model.Card) {
+	h.hand = append(h.hand, card)
+}
+
 // Funcion para ver si una carta es BlackJack
 func (h *HandController) ItsBlackJack() bool {
 	total := 0

@@ -9,7 +9,6 @@ type app struct {
 	deckCtrl    *controllers.DeckController
 	playerCtrl  *controllers.PlayerController
 	crupierCtrl *controllers.CrupierController
-	handCtrl    *controllers.HandController
 }
 
 func (a *app) Run() {
@@ -38,9 +37,8 @@ type App interface {
 func NewApp() App {
 	a := &app{}
 	a.deckCtrl = controllers.NewDeckController()
-	a.handCtrl = controllers.NewHandController()
-	a.playerCtrl = controllers.NewPlayerController(a.deckCtrl, a.handCtrl)
-	a.crupierCtrl = controllers.NewCrupierController(a.deckCtrl, a.handCtrl)
+	a.playerCtrl = controllers.NewPlayerController(a.deckCtrl, controllers.NewHandController())
+	a.crupierCtrl = controllers.NewCrupierController(a.deckCtrl, controllers.NewHandController())
 	return a
 }
 
@@ -166,7 +164,6 @@ func (a *app) jugarTurnoCrupier() {
 	}
 }
 func (a *app) LimpiarDatos() {
-	a.handCtrl.ClearHand()
 	a.crupierCtrl.ClearHand()
 	a.playerCtrl.ClearHand()
 }
