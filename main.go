@@ -7,5 +7,4 @@ import (
 func main() {
 	app := cmd.NewApp()
 	app.Run()
-
 }

@@ -16,7 +16,6 @@ func (a *app) Run() {
 	// ... (Lógica del juego aquí)
 	playAgain := true
 	var choice string
-
 	for playAgain {
 		a.LimpiarDatos()
 		fmt.Printf("\n ¿Quieres iniciar una Partida? S/N ")
@@ -30,7 +29,6 @@ func (a *app) Run() {
 			playAgain = false
 		}
 	}
-
 }
 
 type App interface {
@@ -91,22 +89,22 @@ func (a *app) continuarJuego() {
 	fmt.Println(a.crupierCtrl.ShowHandHidden()) // Mostrar solo la segunda carta
 	var choice string
 	playerTurn := true
-    gameInProcess := true
-    turns := 0
+	gameInProcess := true
+	turns := 0
 
-	for playerTurn && gameInProcess{
+	for playerTurn && gameInProcess {
 		playerScore := a.playerCtrl.HandValue()
 		if playerScore > 21 {
-            gameInProcess = false
+			gameInProcess = false
 		} else {
-            if turns == 0 {
-                fmt.Printf("\n¿Quieres otra carta o te quedas? (H/S/D): ")
-                fmt.Scan(&choice)
-            }else{
-                fmt.Printf("\n¿Quieres otra carta o te quedas? (H/S): ")
-                fmt.Scan(&choice)
-            }
-            turns ++
+			if turns == 0 {
+				fmt.Printf("\n¿Quieres otra carta o te quedas? (H/S/D): ")
+				fmt.Scan(&choice)
+			} else {
+				fmt.Printf("\n¿Quieres otra carta o te quedas? (H/S): ")
+				fmt.Scan(&choice)
+			}
+			turns++
 			switch choice {
 			case "H":
 				a.playerCtrl.PlayerHit()
@@ -125,24 +123,24 @@ func (a *app) continuarJuego() {
 			case "D":
 				a.playerCtrl.PlayerDouble()
 				playerScore := a.playerCtrl.HandValue()
-                if playerScore > 21 {
-                    gameInProcess = false
-                }else{
-                    fmt.Println("Cartas del jugador:")
-                    fmt.Println(a.playerCtrl.ShowHand())
-                    fmt.Println("Score del jugador:", playerScore)
-                    playerTurn = false
-                }
+				if playerScore > 21 {
+					gameInProcess = false
+				} else {
+					fmt.Println("Cartas del jugador:")
+					fmt.Println(a.playerCtrl.ShowHand())
+					fmt.Println("Score del jugador:", playerScore)
+					playerTurn = false
+				}
 			default:
 				fmt.Println("Opción no válida. Intenta de nuevo.")
 			}
 		}
 	}
-	if !playerTurn && gameInProcess{
+	if !playerTurn && gameInProcess {
 		a.jugarTurnoCrupier()
-	}else if !gameInProcess{
-        a.finalizarJuegoExceso()
-    }
+	} else if !gameInProcess {
+		a.finalizarJuegoExceso()
+	}
 }
 
 func (a *app) jugarTurnoCrupier() {
@@ -152,7 +150,7 @@ func (a *app) jugarTurnoCrupier() {
 	a.crupierCtrl.CuprierTurn()
 	crupierScore := a.crupierCtrl.HandValue()
 
-    fmt.Println("\nCartasdel crupier: ", a.crupierCtrl.ShowHand())
+	fmt.Println("\nCartasdel crupier: ", a.crupierCtrl.ShowHand())
 	fmt.Println("\nScore del crupier:", crupierScore)
 
 	playerScore := a.playerCtrl.HandValue()

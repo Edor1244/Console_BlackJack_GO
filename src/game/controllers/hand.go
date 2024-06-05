@@ -1,32 +1,31 @@
 package controllers
 
 import (
-	"Pruebas_D_GO/src/model"
+	"Pruebas_D_GO/src/internal/model"
 )
 
-
 type HandController struct {
-	hand []model.Card	
+	hand []model.Card
 }
 
 func NewHandController() *HandController {
-    return &HandController{
-        hand: []model.Card{}, // Inicializar la mano vacía
-    }
+	return &HandController{
+		hand: []model.Card{}, // Inicializar la mano vacía
+	}
 }
-//Funcion para limpiar manos
+
+// Funcion para limpiar manos
 func (h *HandController) ClearHand() {
 	h.hand = []model.Card{}
 }
 
-
-//Funcion para ver si una carta es BlackJack
-func(h *HandController) ItsBlackJack() bool{
-	total := 0;
+// Funcion para ver si una carta es BlackJack
+func (h *HandController) ItsBlackJack() bool {
+	total := 0
 	total = h.HandValue()
-	if(total == 21){
+	if total == 21 {
 		return true
-	}else{
+	} else {
 		return false
 	}
 }

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"Pruebas_D_GO/src/model"
+	"Pruebas_D_GO/src/internal/model"
 	"math/rand"
 	"time"
 )
@@ -11,14 +11,14 @@ type DeckController struct {
 }
 
 func NewDeckController() *DeckController {
-    d := &DeckController{
-        deck: NewDeck(), // Llama al método NewDeck para crear y asignar la baraja
-    }
-    d.Shuffle()
-    return d
+	d := &DeckController{
+		deck: NewDeck(), // Llama al método NewDeck para crear y asignar la baraja
+	}
+	d.Shuffle()
+	return d
 }
 
-//Estructura de la mano
+// Estructura de la mano
 func NewDeck() model.Deck {
 	var deck model.Deck
 	suits := []string{"Hearts", "Diamonds", "Clubs", "Spades"}
@@ -33,7 +33,7 @@ func NewDeck() model.Deck {
 	return deck
 }
 
-//Función para barajar las cartas
+// Función para barajar las cartas
 func (d *DeckController) Shuffle() {
 	source := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(source)
@@ -43,12 +43,9 @@ func (d *DeckController) Shuffle() {
 	}
 }
 
-//Función para repartir las cartas
-func (d * DeckController) Deal() model.Card {
+// Función para repartir las cartas
+func (d *DeckController) Deal() model.Card {
 	card, remainingDeck := d.deck[0], d.deck[1:]
 	d.deck = remainingDeck
 	return card
 }
-
-
-
